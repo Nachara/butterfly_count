@@ -135,8 +135,6 @@ while(True):
     c = collections.Counter(count_num)
     # print(c.most_common())
     skippers_num = count_num.count('skippers')
-        if skippers_num > 0
-            skippers_add = true
     swallowtail_num = count_num.count('swallowtail')
     whitebutterfly_num = count_num.count('whitebutterfly')
     print('skippers:')
