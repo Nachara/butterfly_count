@@ -32,8 +32,15 @@ from utils import label_map_util
 from utils import visualization_utils as vis_util
 
 
-#追加
+# 追加
 import collections
+
+# CSV
+import csv
+import pprint
+
+import datetime
+dt_now = datetime.datetime.now()
 
 # from utils import backbone
 # from api import object_counting_api
@@ -125,6 +132,21 @@ while(True):
 
     # Press 'q' to quit
     if cv2.waitKey(1) == ord('q'):
+
+        #test code for writing butterfly sum on CSV file
+        # skippers_sum = 1
+        # swallowtail_sum = 2
+        # whitebutterfly_sum = 3
+        #
+        # data = str(dt_now.year)+':'+str(dt_now.month)+':'+str(dt_now.day)
+        # 
+        # with open('Object_detection_csv/data/temp/sample_writer.csv', 'w') as f:
+        #     writer = csv.writer(f)
+        #     writer.writerow([data, skippers_sum, swallowtail_sum, whitebutterfly_sum])
+        #
+        # with open('Object_detection_csv/data/temp/sample_writer.csv') as f:
+        #     print(f.read())
+
         break
 
     # for index,value in enumerate(classes[0]):
@@ -137,6 +159,24 @@ while(True):
     skippers_num = count_num.count('skippers')
     swallowtail_num = count_num.count('swallowtail')
     whitebutterfly_num = count_num.count('whitebutterfly')
+
+    # if skippers_num == 0:
+    #     butterflyFlg = False
+    #     print('no butterfly')
+    #
+    # elif butterflyFlg == False and skippers_num !=0:
+    #     countFlg = True
+    #     butterflyFlg = True
+    #     print('butterfly appeared')
+    #
+    # elif butterflyFlg == True and skippers_num == 0:
+    #     countFlg = False
+    #     butterflyFlg = False
+    #     print('butterfly disappeared')
+    #
+    # if countFlg == True:
+    #     butterfly_sum += skippers_num
+
     print('skippers:')
     print(skippers_num)
     print('swallowtail:')
