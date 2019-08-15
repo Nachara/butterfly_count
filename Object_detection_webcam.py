@@ -104,6 +104,10 @@ video = cv2.VideoCapture(0)
 ret = video.set(3,1280)
 ret = video.set(4,720)
 
+skippers_sum=0
+swallowtail_sum=0
+whitebutterfly_sum=0
+
 while(True):
 
     # Acquire frame and expand frame dimensions to have shape: [1, None, None, 3]
@@ -155,6 +159,11 @@ while(True):
 
     count_num = [category_index.get(value)['name'] for index,value in enumerate(classes[0]) if scores[0,index] > 0.60]
     c = collections.Counter(count_num)
+    
+    skippers_sum += skippers_num
+    swallowtail_sum += swallowtail_num
+    whitebutterfly_sum += whitebutterflu_num
+    
     # print(c.most_common())
     skippers_num = count_num.count('skippers')
     swallowtail_num = count_num.count('swallowtail')
