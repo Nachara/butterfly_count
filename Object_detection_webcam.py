@@ -168,24 +168,34 @@ while(True):
     skippers_num = count_num.count('skippers')
     swallowtail_num = count_num.count('swallowtail')
     whitebutterfly_num = count_num.count('whitebutterfly')
+    
+    # count
+    if skippers_num == 0:
+        skippers_prev = skippers_num
+        butterflyFlg = False
+        print('no butterfly')
 
-    # if skippers_num == 0:
-    #     butterflyFlg = False
-    #     print('no butterfly')
-    #
-    # elif butterflyFlg == False and skippers_num !=0:
-    #     countFlg = True
-    #     butterflyFlg = True
-    #     print('butterfly appeared')
-    #
-    # elif butterflyFlg == True and skippers_num == 0:
-    #     countFlg = False
-    #     butterflyFlg = False
-    #     print('butterfly disappeared')
-    #
-    # if countFlg == True:
-    #     butterfly_sum += skippers_num
+    elif butterflyFlg == True and skippers_num !=0 and skippers_num > skippers_prev:
+        skippers_prev = skippers_num
+        countFlg = True
+        butterflyFlg = True
+        print('a few butterflies appeared')
 
+    elif butterflyFlg == False and skippers_num !=0:
+        skippers_prev = skippers_num
+        countFlg = True
+        butterflyFlg = True
+        print('butterfly appeared')
+
+    elif butterflyFlg == True and skippers_num == 0:
+        skippers_prev = skippers_num
+        countFlg = False
+        butterflyFlg = False
+        print('butterfly disappeared')
+
+    if countFlg == True:
+        skippers_sum = skippers_sum + skippers_num - skippers_prev
+        
     print('skippers:')
     print(skippers_num)
     print('swallowtail:')
