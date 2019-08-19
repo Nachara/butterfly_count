@@ -104,9 +104,21 @@ video = cv2.VideoCapture(0)
 ret = video.set(3,1280)
 ret = video.set(4,720)
 
-skippers_sum=0
-swallowtail_sum=0
-whitebutterfly_sum=0
+skippers_num = 0
+swallowtail_num = 0
+whitebutterfly_num = 0
+
+skippers_sum = 0
+swallowtail_sum = 0
+whitebutterfly_sum = 0
+
+skippers_prev = 0
+swallowtail_prev = 0
+whitebutterfly_prev = 0
+
+countFlg_skippers = False
+countFlg_swallowtail = False
+countFlg_whitebutterfly = False
 
 while(True):
 
@@ -137,19 +149,16 @@ while(True):
     # Press 'q' to quit
     if cv2.waitKey(1) == ord('q'):
 
-        #test code for writing butterfly sum on CSV file
-        # skippers_sum = 1
-        # swallowtail_sum = 2
-        # whitebutterfly_sum = 3
-        #
-        # data = str(dt_now.year)+':'+str(dt_now.month)+':'+str(dt_now.day)
-        # 
-        # with open('Object_detection_csv/data/temp/sample_writer.csv', 'w') as f:
-        #     writer = csv.writer(f)
-        #     writer.writerow([data, skippers_sum, swallowtail_sum, whitebutterfly_sum])
-        #
-        # with open('Object_detection_csv/data/temp/sample_writer.csv') as f:
-        #     print(f.read())
+        # test code for writing butterfly sum on CSV file
+
+        data = str(dt_now.year)+':'+str(dt_now.month)+':'+str(dt_now.day)
+
+        with open('Object_detection_xlab/data/sample_writer.csv', 'a') as f:
+            writer = csv.writer(f)
+            writer.writerow([data, skippers_sum, swallowtail_sum, whitebutterfly_sum])
+
+        with open('Object_detection_xlab/data/sample_writer.csv') as f:
+            print(f.read())
 
         break
 
@@ -159,49 +168,64 @@ while(True):
 
     count_num = [category_index.get(value)['name'] for index,value in enumerate(classes[0]) if scores[0,index] > 0.60]
     c = collections.Counter(count_num)
-    
-    skippers_sum += skippers_num
-    swallowtail_sum += swallowtail_num
-    whitebutterfly_sum += whitebutterflu_num
-    
+
+    # skippers_sum += skippers_num
+    # swallowtail_sum += swallowtail_num
+    # whitebutterfly_sum += whitebutterflu_num
+
+    #count skippers
+    if skippers_num == 0:
+        print('no butterfly')
+
+    elif skippers_num !=0 and skippers_num > skippers_prev:
+        countFlg_skippers = True
+        print('a few butterflies appeared')
+
+    if countFlg_skippers == True:
+        skippers_sum = skippers_sum + (skippers_num-skippers_prev)
+
+    countFlg_skippers = False
+    skippers_prev = skippers_num
+
+    #count swallowtail
+    if swallowtail_num == 0:
+        print('no butterfly')
+
+    elif swallowtail_num !=0 and swallowtail_num > swallowtail_prev:
+        countFlg_swallowtail = True
+        print('a few butterflies appeared')
+
+    if countFlg_swallowtail == True:
+        swallowtail_sum = swallowtail_sum + (swallowtail_num-swallowtail_prev)
+
+    countFlg_swallowtail = False
+    swallowtail_prev = swallowtail_num
+
+    #count whitebutterfly
+    if whitebutterfly_num == 0:
+        print('no butterfly')
+
+    elif whitebutterfly_num !=0 and whitebutterfly_num > whitebutterfly_prev:
+        countFlg_whitebutterfly = True
+        print('a few butterflies appeared')
+
+    if countFlg_whitebutterfly == True:
+        whitebutterfly_sum = whitebutterfly_sum + (whitebutterfly_num-whitebutterfly_prev)
+
+    countFlg_whitebutterfly = False
+    whitebutterfly_prev = whitebutterfly_num
+
     # print(c.most_common())
     skippers_num = count_num.count('skippers')
     swallowtail_num = count_num.count('swallowtail')
     whitebutterfly_num = count_num.count('whitebutterfly')
-    
-    # count
-    if skippers_num == 0:
-        skippers_prev = skippers_num
-        butterflyFlg = False
-        print('no butterfly')
 
-    elif butterflyFlg == True and skippers_num !=0 and skippers_num > skippers_prev:
-        skippers_prev = skippers_num
-        countFlg = True
-        butterflyFlg = True
-        print('a few butterflies appeared')
-
-    elif butterflyFlg == False and skippers_num !=0:
-        skippers_prev = skippers_num
-        countFlg = True
-        butterflyFlg = True
-        print('butterfly appeared')
-
-    elif butterflyFlg == True and skippers_num == 0:
-        skippers_prev = skippers_num
-        countFlg = False
-        butterflyFlg = False
-        print('butterfly disappeared')
-
-    if countFlg == True:
-        skippers_sum = skippers_sum + skippers_num - skippers_prev
-        
     print('skippers:')
-    print(skippers_num)
+    print(str(skippers_num)+', '+str(skippers_sum))
     print('swallowtail:')
-    print(swallowtail_num)
+    print(str(swallowtail_num)+', '+str(swallowtail_sum))
     print('whitebutterfly:')
-    print(whitebutterfly_num)
+    print(str(whitebutterfly_num)+', '+str(whitebutterfly_sum))
 
 # Clean up
 video.release()
